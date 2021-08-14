@@ -1,0 +1,79 @@
+</ul>
+</div>
+</div>
+
+<div class="container ref">
+<div class="card">
+
+    <button class="btn btn-primary btn-lg" onClick="window.location.reload();">Refresh file list</button>
+  </div>
+</div>
+</div>
+
+<div class="container center_div">
+  <h3>Upload to Server</h3>
+  <div class="col-lg-1"></div>
+
+    <div class="jumbotron" style="margin-top:10px;">
+
+  <form id="upload_form" enctype="multipart/form-data" method="post">
+<div class="form-group">
+      <input type="file" name="file1" id="file1"><br>
+</div>
+<div class="form-group">
+    <input type="button" value="Upload file" onclick="uploadFile()">
+</div>
+<div class="form-group">
+    <progress id="progressBar" value="0" max="100" style="width:300px;"></progress>
+</div>
+<div class="form-group">
+    <h3 id="status"></h3>
+    <p id="loaded_n_total"></p>
+</div>
+
+  </form>
+</div>
+</div>
+
+</div>
+</body>
+<script>
+function _(el) {
+  return document.getElementById(el);
+}
+
+function uploadFile() {
+  var file = _("file1").files[0];
+  // alert(file.name+" | "+file.size+" | "+file.type);
+  var formdata = new FormData();
+  formdata.append("file1", file);
+  var ajax = new XMLHttpRequest();
+  ajax.upload.addEventListener("progress", progressHandler, false);
+  ajax.addEventListener("load", completeHandler, false);
+  ajax.addEventListener("error", errorHandler, false);
+  ajax.addEventListener("abort", abortHandler, false);
+  ajax.open("POST", "file_upload_parser");
+  ajax.send(formdata);
+}
+
+function progressHandler(event) {
+  _("loaded_n_total").innerHTML = "Uploaded " + event.loaded + " bytes of " + event.total;
+  var percent = (event.loaded / event.total) * 100;
+  _("progressBar").value = Math.round(percent);
+  _("status").innerHTML = Math.round(percent) + "% uploaded... please wait";
+}
+
+function completeHandler(event) {
+  _("status").innerHTML = event.target.responseText;
+  _("progressBar").value = 0; //wil clear progress bar after successful upload
+}
+
+function errorHandler(event) {
+  _("status").innerHTML = "Upload Failed";
+}
+
+function abortHandler(event) {
+  _("status").innerHTML = "Upload Aborted";
+}
+</script>
+</html>

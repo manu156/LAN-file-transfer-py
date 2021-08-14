@@ -1,0 +1,14 @@
+.list-group {
+    max-height: 500px;
+    margin-bottom: 10px;
+    overflow:scroll;
+    -webkit-overflow-scrolling: touch;
+}
+.center_div {
+  margin: 0 auto;
+  width: 100%
+}
+.ref{
+  margin: 0 auto;
+  width: inherit;
+}
